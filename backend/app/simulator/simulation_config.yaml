@@ -1,0 +1,37 @@
+organization:
+  name: "Global CyberTech Enterprise"
+  industry: "Cybersecurity & Technology Solutions"
+  countries: ["United States", "United Kingdom", "Germany", "Singapore", "Japan"]
+  offices:
+    - name: "New York HQ"
+      country: "United States"
+      city: "New York"
+      tz: "America/New_York"
+    - name: "London Regional Office"
+      country: "United Kingdom"
+      city: "London"
+      tz: "Europe/London"
+    - name: "Berlin Innovation Center"
+      country: "Germany"
+      city: "Berlin"
+      tz: "Europe/Berlin"
+    - name: "Singapore APAC Hub"
+      country: "Singapore"
+      city: "Singapore"
+      tz: "Asia/Singapore"
+  departments:
+    - Engineering
+    - Security Operations
+    - Human Resources
+    - Finance & Accounting
+    - Executive Leadership
+    - Sales & Marketing
+
+simulation_parameters:
+  num_employees: 50
+  remote_work_percentage: 0.35
+  travel_frequency_percentage: 0.15
+  attack_campaign_rate: 0.05
+  business_hours:
+    start_hour: 9
+    end_hour: 17

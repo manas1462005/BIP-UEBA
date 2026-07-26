@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bip_postgres
+    environment:
+      POSTGRES_USER: bip_admin
+      POSTGRES_PASSWORD: bip_password_secure
+      POSTGRES_DB: bip_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bip_admin -d bip_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bip_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: bip_backend
+    environment:
+      - ENVIRONMENT=production
+      - POSTGRES_USER=bip_admin
+      - POSTGRES_PASSWORD=bip_password_secure
+      - POSTGRES_DB=bip_db
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - DATABASE_URL=postgresql://bip_admin:bip_password_secure@postgres:5432/bip_db
+      - SECRET_KEY=super-secret-key-change-this-in-production-min-32-chars-long
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - bip_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: bip_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - bip_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  bip_network:
+    driver: bridge
